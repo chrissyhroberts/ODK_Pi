@@ -28,6 +28,14 @@ Open terminal
 
 #install java development kit
 sudo apt-get update && sudo apt-get install oracle-java7-jdk
+cd /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/lib/security
+http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+
+this bit gets odk briefcase working
+sudo apt-get remove openjdk-8-jre-headless openjdk-8-jre
+sudo apt-get install ca-certificates-java
+sudo apt-get install openjdk-8-jre-headless
+sudo apt-get install openjdk-8-jre # Optional, enables Java GUI apps
 
 
 
