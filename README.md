@@ -41,6 +41,8 @@ sudo apt-get install openjdk-8-jre # Optional, enables Java GUI apps
 
 #install R 
 `sudo apt-get install r-base r-base-dev `
+pandoc
+sudo apt-get install pandoc pandoc-citeproc
 
 #start R environment and install packages
 `R
