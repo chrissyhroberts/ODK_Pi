@@ -27,9 +27,14 @@ Open terminal
 `sudo apt-get update  `
 
 #install java development kit
-`sudo apt-get install default-jdk`
-
-
+`sudo apt-get install default-jre`
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+sudo mv jdk-8u171-linux-arm64-vfp-hflt.tar.gz /usr/local/
+sudo tar -xzf jdk-8u171-linux-arm64-vfp-hflt.tar.gz~/.profile
+rename folder to jdk1.8.0
+sudo nano ~/.profile
+#add line to profile to make path default
+export PATH=/usr/local/jdk1.8.0/bin:$PATH
 #install R 
 `sudo apt-get install r-base r-base-dev `
 
