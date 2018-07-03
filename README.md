@@ -16,6 +16,12 @@ Connect to Wifi and update
 Open terminal
 
 ```
+#add current date at startup
+	sudo nano /etc/rc.local
+
+#add the following line to the rc.local file
+
+sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
 
 #update list of packages
 sudo apt-get update  
