@@ -61,5 +61,5 @@ How to automatically run a script after login.
 
 	#Step 3: Save and Exit
 	#Press Ctrl+X to exit nano editor followed by Y to save the file.
-
+s
 
