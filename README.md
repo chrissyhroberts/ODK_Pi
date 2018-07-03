@@ -15,31 +15,29 @@ Connect to Wifi and update
 
 Open terminal
 
-```
+
 #add current date at startup
-	sudo nano /etc/rc.local
+`	sudo nano /etc/rc.local`
 
 #add the following line to the rc.local file
 
-sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
+`sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"`
 
 #update list of packages
-sudo apt-get update  
-
-#remove bloating packages in raspbian
-sudo apt-get remove --purge wolfram-engine scratch nuscratch sonic-pi pistore idle3 smartsim penguinspuzzle java-common minecraft-pi python-minecraftpi python3-minecraftpi libx11-6 libgtk-3-common xkb-data lxde-icon-theme raspberrypi-artwork 
-
-#install R 
-sudo apt-get install r-base r-base-dev 
-
-#start R environment and install packages
-R
-install.packages("tidyverse")
-q()
+`sudo apt-get update  `
 
 #install java development kit
-sudo apt-get install default-jdk
-```
+`sudo apt-get install default-jdk`
+
+
+#install R 
+`sudo apt-get install r-base r-base-dev `
+
+#start R environment and install packages
+`R
+install.packages("tidyverse")
+q()
+`
 
 **Run a Script after login**  
 How to automatically run a script after login.  
