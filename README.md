@@ -12,14 +12,39 @@ Noobs https://www.raspberrypi.org/downloads/noobs/
 Install Noobs as per instructions (copy all files from noobs folder on to SDHC card and plug in to RPi)
 Connect to Wifi and update
 
+
 Open terminal
-```
-sudo apt-get update
-sudo apt-get install r-base r-base-dev 
-R
-install.packages("tidyverse")
-sudo apt-get install openjdk-11-jdk
+
 ```
 
+#update list of packages
+sudo apt-get update  
+
+#remove bloating packages in raspbian
+sudo apt-get remove --purge wolfram-engine scratch nuscratch sonic-pi pistore idle3 smartsim penguinspuzzle java-common minecraft-pi python-minecraftpi python3-minecraftpi libx11-6 libgtk-3-common xkb-data lxde-icon-theme raspberrypi-artwork 
+
+#install R 
+sudo apt-get install r-base r-base-dev 
+
+#start R environment and install packages
+R
+install.packages("tidyverse")
+q()
+
+#install java development kit
+sudo apt-get install default-jdk
+```
+
+**Run a Script after login**  
+How to automatically run a script after login.  
+	
+	#Step 1: Open a terminal session and edit the file /etc/profile
+	sudo nano /etc/profile
+	
+	#Step 2: Add the following line to the end of the file  
+	./home/pi/your_script_name.sh
+
+	#Step 3: Save and Exit
+	#Press Ctrl+X to exit nano editor followed by Y to save the file.
 
 
