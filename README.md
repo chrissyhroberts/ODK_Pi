@@ -174,3 +174,7 @@ Then I gedit /usr/share/applications/hello1.desktop file(below):
 8) Terminal=true
 9) Categories=Utility;
 again, use open with to set as default and then there won't be any warnings about running sh
+
+
+Push forms to pi through sftp on "andFTP" app. hostname = ip of device username pi  password pip 
+don't change anything else.
