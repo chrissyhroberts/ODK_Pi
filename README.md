@@ -20,9 +20,6 @@ Open terminal
 #update list of packages
 sudo apt-get update  
 
-#remove bloating packages in raspbian
-sudo apt-get remove --purge wolfram-engine scratch nuscratch sonic-pi pistore idle3 smartsim penguinspuzzle java-common minecraft-pi python-minecraftpi python3-minecraftpi libx11-6 libgtk-3-common xkb-data lxde-icon-theme raspberrypi-artwork 
-
 #install R 
 sudo apt-get install r-base r-base-dev 
 
