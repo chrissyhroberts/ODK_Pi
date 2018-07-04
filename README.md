@@ -157,3 +157,4 @@ Type=Application
 MimeType=application/x-java-archive
 StartupNotify=true
 After adding this file you should be able to find an entry called Java in the Open file with...-Dialog
+Then open a file this way and select always open with this program
