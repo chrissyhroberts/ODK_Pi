@@ -131,3 +131,6 @@ restore:
 
 dd if=sd.img of=/dev/sdb bs=4M
 
+
+#github desktop for linux
+https://github.com/shiftkey/desktop/releases
