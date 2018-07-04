@@ -115,5 +115,19 @@ How to automatically run a script after login.
 s
 
 
+To clone RPI SD Card
+`sudo dd if=/dev/disk3 of=/Volumes/Totoro/Users/chrissyhroberts/Dropbox/RPI_Backups/20180704/A20180704 bs=1m`
 
+To restore RPI SD Card
+`sudo dd if=/Volumes/Totoro/Users/chrissyhroberts/Dropbox/RPI_Backups/20180704/A20180704 of=/dev/disk3 bs=1m`
+
+based on this example 
+
+backup:
+
+dd if=/dev/sdb of=sd.img bs=4M
+
+restore:
+
+dd if=sd.img of=/dev/sdb bs=4M
 
