@@ -173,3 +173,4 @@ Then I gedit /usr/share/applications/hello1.desktop file(below):
 7) Icon=utilities-terminal
 8) Terminal=true
 9) Categories=Utility;
+again, use open with to set as default and then there won't be any warnings about running sh
