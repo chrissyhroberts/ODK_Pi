@@ -158,3 +158,18 @@ MimeType=application/x-java-archive
 StartupNotify=true
 After adding this file you should be able to find an entry called Java in the Open file with...-Dialog
 Then open a file this way and select always open with this program
+
+
+
+Make same for running an sh script
+2) create a *.desktop file in your /usr/share/applications
+Then I gedit /usr/share/applications/hello1.desktop file(below):
+[Desktop Entry]
+1) Version=1.0
+2) Type=Application
+3) Name=Hello1
+4) Comment=Test the terminal running a command inside it
+6) StartupNotify=true
+7) Icon=utilities-terminal
+8) Terminal=true
+9) Categories=Utility;
