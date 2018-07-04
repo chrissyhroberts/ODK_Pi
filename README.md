@@ -29,8 +29,40 @@ install.packages("tidyverse")
 q()
 
 #install java development kit
-sudo apt-get install default-jdk
-```
+`sudo apt-get install default-jdk`
+
+
+
+change priority of WIFI networks
+Add priority=2 to the wifi_B block and priority=1 to the wifi_A block in the /etc/wpa_supplicant/wpa_supplicant.conf file.
+Higher number is higher priority
+
+i.e.
+`network={
+    ssid = "wifi_A"
+    psk = "passwordOfA"
+    priority = 1
+}
+network={
+   ssid = "wifi_B"
+   psk = "passwordOfB"
+   priority = 2
+}
+`
+
+to shift from one network to another 
+
+`wpa_cli select_network 0`
+
+
+
+System setup 
+
+Need the following on tablet
+VNC Viewer
+Net Analyser
+
+
 
 **Run a Script after login**  
 =======
@@ -81,4 +113,7 @@ How to automatically run a script after login.
 	#Step 3: Save and Exit
 	#Press Ctrl+X to exit nano editor followed by Y to save the file.
 s
+
+
+
 
