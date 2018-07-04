@@ -137,3 +137,23 @@ https://github.com/shiftkey/desktop/releases
 
 How to automatically mount an USB device on plugin-time on an already running system
 sudo apt-get install usbmount  
+
+
+
+
+make possible doublwe clicj java start
+
+Adding a file called /usr/share/applications/java.desktop with following content should do the trick.
+
+[Desktop Entry]
+Name=Java
+Comment=Java
+GenericName=Java
+Keywords=java
+Exec=java -jar %f
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+MimeType=application/x-java-archive
+StartupNotify=true
+After adding this file you should be able to find an entry called Java in the Open file with...-Dialog
