@@ -59,10 +59,12 @@ to shift from one network to another
 System setup 
 
 Need the following on tablet
-VNC Viewer
+VNC Viewer app
 Net Analyser
 
 
+Have to enable VNC server on RPI through sudo raspi-config
+Also install network analyser to find out what ip is of rpi
 
 **Run a Script after login**  
 =======
