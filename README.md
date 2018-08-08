@@ -13,6 +13,20 @@ Install Noobs as per instructions (copy all files from noobs folder on to SDHC c
 Connect to Wifi and update
 
 
+#redux - 
+Format SD card with [SD Formatter](https://www.sdcard.org/downloads/formatter_4/index.html)
+
+Download [Ubuntu Mate](https://ubuntu-mate.org/download/) image for ARM architecture
+
+*download image* and flash to SD card with [etcher](https://etcher.io/)
+
+**If you don't have it install xz**
+brew install xz
+
+xz ubuntu-mate-16... .xz
+
+
+
 Open terminal
 
 
