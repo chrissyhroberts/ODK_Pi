@@ -1,5 +1,5 @@
 # ODK_Pi
-3ch
+3ch popp
 A deployable ODK server based on Raspberry Pi, R, Raspbian
 
 **Equipment**
