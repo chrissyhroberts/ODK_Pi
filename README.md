@@ -13,10 +13,10 @@ Install Noobs as per instructions (copy all files from noobs folder on to SDHC c
 Connect to Wifi and update
 
 
-#redux - 
+#alternative redux - but this didn't work as per instructions 
 Format SD card with [SD Formatter](https://www.sdcard.org/downloads/formatter_4/index.html)
 
-Download [Ubuntu Mate](https://ubuntu-mate.org/download/) image for ARM architecture
+Download [Raspbian Stretch with Desktop](https://www.raspberrypi.org/downloads/) image for ARM architecture [labelled Raspberry Pi Desktop (for Mac and PC)
 
 *download image* and flash to SD card with [etcher](https://etcher.io/)
 
@@ -50,9 +50,10 @@ q()
 change priority of WIFI networks
 Add priority=2 to the wifi_B block and priority=1 to the wifi_A block in the /etc/wpa_supplicant/wpa_supplicant.conf file.
 Higher number is higher priority
+  
+i.e.  
 
-i.e.
-`network={
+>network={
     ssid = "wifi_A"
     psk = "passwordOfA"
     priority = 1
@@ -62,11 +63,11 @@ network={
    psk = "passwordOfB"
    priority = 2
 }
-`
+  
 
 to shift from one network to another 
 
-`wpa_cli select_network 0`
+>wpa_cli select_network 0
 
 
 
@@ -77,34 +78,51 @@ VNC Viewer app
 Net Analyser
 
 
-Have to enable VNC server on RPI through sudo raspi-config
+Have to enable SSH and VNC server on RPI through sudo raspi-config
 Also install network analyser to find out what ip is of rpi
 
 **Run a Script after login**  
 =======
 #add current date at startup  
-`	sudo nano /etc/rc.local`    
+>sudo nano /etc/rc.local
   
 #add the following line to the rc.local file  
 
-`sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"`  
+>sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"`  
   
-#update list of packages  
-`sudo apt-get update  `  
 
 #install java development kit  
-sudo apt-get update && sudo apt-get install oracle-java7-jdk  
+
 cd /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/lib/security  
 http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html  
 
 this bit gets odk briefcase working  
+ # Optional, enables Java GUI apps  
+
+
+>sudo apt-get update  
 sudo apt-get remove openjdk-8-jre-headless openjdk-8-jre  
+sudo apt-get remove --purge wolfram-engine scratch2 libreoffice* scratch wolfram-engine scratch minecraft-pi sonic-pi dillo gpicview
+
+
+sudo apt-get clean
+sudo apt-get autoremove
+
+
 sudo apt-get install ca-certificates-java  
 sudo apt-get install openjdk-8-jre-headless  
-sudo apt-get install openjdk-8-jre # Optional, enables Java GUI apps  
+sudo apt-get install openjdk-8-jre
+sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libssl-dev
+sudo apt-get install libxml2
+sudo apt-get install libxml2-dev 
+sudo apt-get install gdal-bin libgdal-dev
+#get odk briefcase
 
+>curl --silent "https://api.github.com/repos/opendatakit/briefcase/releases/latest" | grep "browser_download_url" | sed -E 's/.*"([^"]+)".*/\1/' |xargs wget
 
-
+wget ,,,
+where ... is output of the curl
 #install R   
 `sudo apt-get install r-base r-base-dev `  
 pandoc  
@@ -115,6 +133,10 @@ sudo apt-get install pandoc pandoc-citeproc
 install.packages("tidyverse")  
 q()  
 `  
+#set up github
+>git config --global user.name "ORK-RPI-001"  
+git config --global user.email "chrissyhroberts@yahoo.co.uk"  
+git config --global core.editor nano
   
 **Run a Script after login**    
 >>>>>>> b5143f658c282c2c197c8f0ea83da59e7cefb219
