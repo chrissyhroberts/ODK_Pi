@@ -52,18 +52,46 @@ Add priority=2 to the wifi_B block and priority=1 to the wifi_A block in the /et
 Higher number is higher priority
   
 i.e.  
+>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf  
+>
+>network={  
+    ssid = "wifi_A"  
+    psk = "passwordOfA"  
+    priority = 1  
+}  
+network={  
+   ssid = "wifi_B"  
+   psk = "passwordOfB"  
+   priority = 2  
+}
 
->network={
-    ssid = "wifi_A"
-    psk = "passwordOfA"
-    priority = 1
-}
+
+For Eduroam do this...  
+http://jankuester.com/connecting-raspberry-pi-to-eduroam-using-wpa-supplicant/
+
+#change wpa_supplicant.conf
+>sudo nano /etc/wpa_supplicant/wpa_supplicant.conf  
+ 
+>ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=netdev
+
+country=GB
+
+
 network={
-   ssid = "wifi_B"
-   psk = "passwordOfB"
-   priority = 2
+ssid="eduroam"
+key_mgmt=WPA-EAP
+eap=PEAP
+phase2="auth=MSCHAPV2"
+identity="icrucrob@lshtm.ac.uk"
+anonymous_identity="anonymous@lshtm.ac.uk"
+password="CATbus-cakelie"
 }
-  
+
+#change interfaces
+>sudo nano /etc/network/interfaces
+
+>
 
 to shift from one network to another 
 
@@ -88,7 +116,8 @@ Also install network analyser to find out what ip is of rpi
   
 #add the following line to the rc.local file  
 
->sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"`  
+>sudo date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
+ 
   
 
 #install java development kit  
@@ -108,7 +137,8 @@ sudo apt-get remove --purge wolfram-engine scratch2 libreoffice* scratch wolfram
 sudo apt-get clean
 sudo apt-get autoremove
 
-
+sudo apt-get install apt-file
+sudo apt-file update
 sudo apt-get install ca-certificates-java  
 sudo apt-get install openjdk-8-jre-headless  
 sudo apt-get install openjdk-8-jre
@@ -137,6 +167,35 @@ q()
 >git config --global user.name "ORK-RPI-001"  
 git config --global user.email "chrissyhroberts@yahoo.co.uk"  
 git config --global core.editor nano
+  
+  
+  
+ git status
+  
+  
+MAKE DROPBOX APP IN DEVELOPER SECTION - ACCESS ONLY ONE DIRECTORY
+
+dropbox api key
+u0qp12v5de31b8d
+
+secret key
+bak17v16d19gq0s
+
+	
+Redirect URIs
+
+https:// (http allowed for localhost)
+Allow implicit grant
+More information
+
+Generated access token
+More information
+
+access token
+FTSlCiwydp8AAAAAAAW6zt3vr_pBhYgBGWmuJkxbTboJtArs67Im1kb7ZrfzuZiO
+This access token can be used to access your account (chrissyhroberts@googlemail.com) via the API. Don’t share your access token with anyone.
+
+
   
 **Run a Script after login**    
 >>>>>>> b5143f658c282c2c197c8f0ea83da59e7cefb219
