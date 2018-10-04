@@ -1,41 +1,67 @@
 # ODK_Pi
 
-A deployable ODK server based on Raspberry Pi Raspbian
+A deployable ODK Briefcase based data hub based on Raspberry Pi Raspbian
+
+#### Background
+Some of our users are working in areas with little or no internet connection, so a portable hub for aggregating data in the field, which is able to later push data to ODK aggregate is a useful interim/backup device that can also be preconfigured to output CSVs, PDF copies of data and so on for on the ground data needs. 
+
+The ODK briefcase software provides all the functionality we need for this purpose. The benefits of putting briefcase on to a Raspberry Pi (RPi) are 
+
+* The small size and weight of the RPi mean that you could send it in the post, carry it in your pocket and include it as a 'just in case' plan B measure for studies where your baggage allowance is only what you can carry.
+* Dedicated system means you don't have to 'donate' your own laptop to study team for the duration of the work.
+* The RPi costs ~£35 and can be used with a tablet/phone/TV as display and touchscreen/keyboard/mouse as I/O devices
+* Runs off pretty much any power source and has low consumption and heat output. Can be run inside a tupperware box, so good off grid, in the rainforest and so on.
+* Provides full linux system including encryption/decryption, R, Python, Java etc. 
+* SD cards can be cloned, meaning that you can take a box of RPis and set up as many hubs as you need if the scale of project grows.
+
+These instructions should be sufficient to set up a new installation of the Raspbian operating system, then to install any necessary packages and software (including ODK Briefcase). It will also help you to set up the system so that you can work with Android devices via the MTP protocol (which is not especially obvious) and various other tips and tricks that make all these things fit together.
+
+Nothing in this guide is particularly difficult and not novel, but I think this is the first place where everything is listed as a single set of instructions. 
+
 
 **Equipment**
 
-Raspberry Pi (Tested on R Pi 3 B+)  
+[Raspberry Pi](https://www.raspberrypi.org/) (Tested on R Pi 3 B+)  
 SDHC Micro SD card (16 GB tested) formatted to FAT / FAT32  
-Noobs https://www.raspberrypi.org/downloads/noobs/  
+Noobs [https://www.raspberrypi.org/downloads/noobs/](https://www.raspberrypi.org/downloads/noobs/)  
 
 **R Pi Setup**  
 
-* Install Noobs as per instructions (copy all files from noobs folder on to SDHC card and plug in to RPi)  
-* Power on, connect to Wifi, install Raspbian and update
+* Install Noobs as per [instructions](https://www.raspberrypi.org/downloads/noobs/). Tested on Noobs Lite (Network install)
 
-> You should have a basic rpi installation of raspbian now
-  
+	1) Copy all files from noobs folder on to SDHC card  
+	2) Plug SD card in to RPi. 
+	
+
+* Power on the RPi, connect to Wifi, follow steps to install Raspbian and update
+
+**You should now have a basic RPi installation of raspbian**
+
+* Fiddle around with your wifi settings, bluetooth etc.  
 * Open Terminal
 
 =======
 ###Get current date and time from internet at startup  
+The RPi doesn't have a real time clock onboard, so I'd recommend putting on a clock board if using this in the field. Otherwise you'll be relying on internet time. For the time being though, let's stick with the basic board and grab internet time at startup. 
+
 ```sudo nano /etc/rc.local```
   
-* Add the following line to the rc.local file above *exit 0*
+* Add the following line to the rc.local file above where it says *exit 0*
 
 ```date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"```
 
 
 ###update list of packages and remove bloatware
+I'm guessing you don't want to play Minecraft on this RPi (though it is a great game) so let's save about 1.5 GB of SD card space and remove bloatware that comes preinstalled on this version of Raspbian.
+
 ```
 sudo apt-get update  
 sudo apt-get upgrade
 sudo apt-get remove --purge wolfram-engine scratch2 libreoffice* scratch minecraft-pi sonic-pi dillo gpicview
 ```  
 
-* select 'y' when prompted to remove bloatware
-
-* clean up leftovers from removed packages
+* select 'y' or 'Y' when prompted to remove these packages
+* clean up leftover dependencies from removed packages
 
 ```
 sudo apt-get clean
@@ -43,35 +69,37 @@ sudo apt-get autoremove
 ```
 
 ### Add required packages
+This will add a bunch of useful things that you need
 
 ```
 sudo apt-get install apt-file
 sudo apt-file update
 ```
+
 ```
 sudo apt-get install libcurl4-openssl-dev libssl-dev libxml2 libxml2-dev libgdal-dev usbmount 
 ```
-### Install JDK
+### Install Java Development Kit (JDK)
 
 ```
 sudo apt-get install ca-certificates-java  
 sudo apt-get install openjdk-9-jre
 ```
-###get odk briefcase
+
+###Get odk briefcase
 
 ```
 curl --silent "https://api.github.com/repos/opendatakit/briefcase/releases/latest" | grep "browser_download_url" | sed -E 's/.*"([^"]+)".*/\1/' |xargs wget
 ```
 
 ### Set Jar files to open on double click
+You probably don't want to have to start ODK Briefcase from the command line every time you use it, so this will make jar files run by double-clicking them
 
 * Add a java.desktop file to tell OS how to handle .jar files
 
 ```
 nano /usr/share/applications/java.desktop 
 ```
-
-
 
 ```
 [[Desktop Entry]
@@ -86,14 +114,18 @@ Type=Application
 MimeType=application/x-java-archive
 StartupNotify=true
 ```
+Close the *'nano'* text editor by pressing *CTRL* & *C* and then press *"Y"* to save the new file
 
-After adding this file you should be able to find an entry called Java in the Open *file with...* -Dialog
-Then open a file this way and select always open with this program
+After adding this file you should be able to find an entry called Java in the *Open file with...* dialog when you right click the jar file.
 
-#### ODK Briefcase should now be able to download data and export with private key
+Select *always open with this program* and you are set to go.
+
+
+ODK Briefcase should now be able to download data and export decrypted data when provided with a private key (.pem).
 
 
 ###Add support for connecting android devices
+Android uses the MTP protocol to connect to linux. This is no doubt safer but is a lot *weirder* than the old fashioned approach where it just mounted your tablet as a USB drive on your computer. Without a bit of jiggery pokery it's hard to figure out how to find the folders. The next few steps make it much easier. 
 
 ``` 
 sudo apt-get install gvfs-backends gvfs-bin gvfs-fuse gvfs-daemons  
@@ -108,7 +140,7 @@ sudo apt-get install gvfs-backends gvfs-bin gvfs-fuse gvfs-daemons
 
 > gvfsd-fuse on **/run/user/1000/gvfs** type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
 
-* the key folder here is **/run/user/1000/gvfs/**
+* the key folder here is **/run/user/1000/gvfs/** but it might be different on your system
 * Change to the root directory and create a symlink to the parent directory
 
 ```
@@ -120,7 +152,7 @@ ln -s /run/user/1000/gvfs Android_Device
 * Open a file manager window and select *Edit* > *Preferences* > *Volume Management*
 * Unselect *"Show available options for removable media..."*
 
-You should now have a folder called "Android_Device" in the root directory. When a device is connected to the RPI, this folder should automagically get a new subfolder for the Android MTP protocol. 
+You should now have a folder called "Android_Device" in the root directory. When a device is connected to the RPi, this folder should automagically get a new subfolder for the Android MTP protocol. 
 
 * Connect an Android device by USB cable
 * Unlock the device
@@ -130,31 +162,22 @@ You should now have a folder called "Android_Device" in the root directory. When
 * When you switch devices, press F5 to update the folder.
 
 
+**ODK briefcase should now be able to pull all data from devices via the "Android_Devices" Folder.** 
 
-**ODK briefcase should now be able to pull all data from devices via the "Android_Devices" Folder.**
+Navigate to it and you'll see a uniquely named folder under which you should see the internal and SD card folders of your device. Inside one or the other will be your *ODK* folder. That's the one that ODK Briefcase can pull instances from.
 
+### Wireless push of instances from Android to RPi
 
+You can send forms to the RPi through sftp using the excellent **[andFTP](https://play.google.com/store/apps/details?id=lysesoft.andftp&hl=en_US)** 
 
-
-
-
-
-
-
-
-
-
-##APPENDIX
 
 ### If you want to run a shell script by double clicking
+This can be useful if you have downstream stuff going on, or if you want to write a script to control a batch of ODK briefcase operations from the command line interface (CLI). 
 
 * Create a *.desktop file in your /usr/share/applications
-
 * Example - *do.stuff.sh*
 
 ```nano /usr/share/applications/do.stuff.desktop```
-
-
 
 ```
 [Desktop Entry]
@@ -172,17 +195,12 @@ Categories=Application;Network;
 Use *open with...* and *set as default* and then script will run on double click
 
 
-Push forms to pi through sftp on "andFTP" app. hostname = ip of device username pi  password FMTC	 
-don't change anything else.
-
-
-
 ###Install R and pandoc
 Useful for analysis (R) and reporting (Pandoc)
 ```sudo apt-get install r-base r-base-dev pandoc pandoc-citeproc```
 
 
-### change priority of WIFI networks
+### Change priority of WIFI networks
 This can be useful if you want to control the precedence of networks joined over wifi. 
 
 ```sudo nano /etc/wpa_supplicant/wpa_supplicant.conf```
@@ -205,7 +223,7 @@ network={
 ```
 
 ###For UK academics on Eduroam
-Eduroam is a UK wide wifi provider for cross-institutional working. It can be hard to set up on Rpi, but instructions [here](http://jankuester.com/connecting-raspberry-pi-to-eduroam-using-wpa-supplicant/) should be helpful. Below worked for me.
+Eduroam is a UK wide wifi provider for cross-institutional working. It can be hard to set up on RPi, but instructions [here](http://jankuester.com/connecting-raspberry-pi-to-eduroam-using-wpa-supplicant/) should be helpful. Below worked for me.
 
 ```sudo nano /etc/wpa_supplicant/wpa_supplicant.conf```
  
@@ -236,6 +254,7 @@ Linux provides a nice easy way to switch between networks. A simple sh script wo
 
 ###Set up github
 Github provides a nice way to get updated analysis scripts on to the RPi automatically.
+Git is built in to the Raspbian OS, so you just need to connect to GitHub to get your scripts
 
 ```
 git config --global user.name "USERNAME"  
@@ -256,72 +275,29 @@ Add the following line to the end of the file
 ```
 ./home/pi/your_script_name.sh
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-System setup 
-
-Need the following on tablet
-VNC Viewer app
-Net Analyser
-
-
-Have to enable SSH and VNC server on RPI through sudo raspi-config
-Also install network analyser to find out what ip is of rpi
-
-
-  
-
-  
-  
-  
- git status
   
 ###Dropbox 
-Dropbox is a convenient way to get data back off an Rpi, though not recommended for sensitive data (at the very least you should encrypt the data).
+Dropbox is a convenient way to get data back off an RPi, though not recommended for sensitive data (at the very least you should encrypt the data).
 
 Dropbox integration for RPi is not great, but [Dropbox Uploader](https://github.com/andreafabrizi/Dropbox-Uploader) is an excellent script for moving stuff to and from Dropbox. [These instructions](https://www.raspberrypi.org/magpi/dropbox-raspberry-pi/) are also very useful.
 
 * Visit [Dropbox Uploader](https://github.com/andreafabrizi/Dropbox-Uploader) follow the instructions in the README.MD for the most up to date instructions.   
 
-  
+
+### Backup your SD card so that you can use it elsewhere or recover from mishaps
+
+**BEWARE** that you have to use the right mount point (in the example I used /dev/disk3). If you try to write to the wrong disk when restoring the SD card, then you will probably brick your system.
+
+Run ```df``` to see what mounts you have. Identify which one is the disk you want to restore to. 
+
+To clone RPi SD Card
+`sudo dd if=/dev/disk3 of=/Volumes/RPi_Backups/name bs=1m`
+
+To restore RPi SD Card
+`sudo dd if=/Volumes/RPi_Backups/name of=/dev/disk3 bs=1m`
 
 
-To clone RPI SD Card
-`sudo dd if=/dev/disk3 of=/Volumes/Totoro/Users/chrissyhroberts/Dropbox/RPI_Backups/20180704/A20180704 bs=1m`
-
-To restore RPI SD Card
-`sudo dd if=/Volumes/Totoro/Users/chrissyhroberts/Dropbox/RPI_Backups/20180704/A20180704 of=/dev/disk3 bs=1m`
-
-based on this example 
-
-backup:
-
-dd if=/dev/sdb of=sd.img bs=4M
-
-restore:
-
-dd if=sd.img of=/dev/sdb bs=4M
-
-
-#github desktop for linux
-https://github.com/shiftkey/desktop/releases
-
-How to automatically mount an USB device on plugin-time on an already running system
-sudo apt-get install usbmount  
-
-
-
+ 
 
 
 
