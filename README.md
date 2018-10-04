@@ -41,7 +41,7 @@ Noobs [https://www.raspberrypi.org/downloads/noobs/](https://www.raspberrypi.org
 * Open Terminal
 
 =======
-###Get current date and time from internet at startup  
+### Get current date and time from internet at startup  
 The RPi doesn't have a real time clock onboard, so I'd recommend putting on a clock board if using this in the field. Otherwise you'll be relying on internet time. For the time being though, let's stick with the basic board and grab internet time at startup. 
 
 ```sudo nano /etc/rc.local```
@@ -51,7 +51,7 @@ The RPi doesn't have a real time clock onboard, so I'd recommend putting on a cl
 ```date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"```
 
 
-###update list of packages and remove bloatware
+### update list of packages and remove bloatware
 I'm guessing you don't want to play Minecraft on this RPi (though it is a great game) so let's save about 1.5 GB of SD card space and remove bloatware that comes preinstalled on this version of Raspbian.
 
 ```
@@ -86,7 +86,7 @@ sudo apt-get install ca-certificates-java
 sudo apt-get install openjdk-9-jre
 ```
 
-###Get odk briefcase
+### Get odk briefcase
 
 ```
 curl --silent "https://api.github.com/repos/opendatakit/briefcase/releases/latest" | grep "browser_download_url" | sed -E 's/.*"([^"]+)".*/\1/' |xargs wget
@@ -124,7 +124,7 @@ Select *always open with this program* and you are set to go.
 ODK Briefcase should now be able to download data and export decrypted data when provided with a private key (.pem).
 
 
-###Add support for connecting android devices
+### Add support for connecting android devices
 Android uses the MTP protocol to connect to linux. This is no doubt safer but is a lot *weirder* than the old fashioned approach where it just mounted your tablet as a USB drive on your computer. Without a bit of jiggery pokery it's hard to figure out how to find the folders. The next few steps make it much easier. 
 
 ``` 
@@ -195,7 +195,7 @@ Categories=Application;Network;
 Use *open with...* and *set as default* and then script will run on double click
 
 
-###Install R and pandoc
+### Install R and pandoc
 Useful for analysis (R) and reporting (Pandoc)
 ```sudo apt-get install r-base r-base-dev pandoc pandoc-citeproc```
 
@@ -222,7 +222,7 @@ network={
 }
 ```
 
-###For UK academics on Eduroam
+### For UK academics on Eduroam
 Eduroam is a UK wide wifi provider for cross-institutional working. It can be hard to set up on RPi, but instructions [here](http://jankuester.com/connecting-raspberry-pi-to-eduroam-using-wpa-supplicant/) should be helpful. Below worked for me.
 
 ```sudo nano /etc/wpa_supplicant/wpa_supplicant.conf```
@@ -244,7 +244,7 @@ password="pwd"
 }
 ```
 
-###Hotswitching between networks
+### Hotswitching between networks
 Linux provides a nice easy way to switch between networks. A simple sh script would provide a nice clickable way to switch via a GUI, but on RPi you get the added bonus that you can connect physical switches to the pins. A push button could be used to switch between wifi networks (i.e. to move from a fully online network to an offline local wifi network provided by a hotspot. The latter is very useful if you want to use VNC software to allow using an Android tablet as a screen and interface to RPi whilst in the field. 
 
 
@@ -252,7 +252,7 @@ Linux provides a nice easy way to switch between networks. A simple sh script wo
 
 ```wpa_cli select_network 0``` or number of network is all you need to do. 
 
-###Set up github
+### Set up github
 Github provides a nice way to get updated analysis scripts on to the RPi automatically.
 Git is built in to the Raspbian OS, so you just need to connect to GitHub to get your scripts
 
@@ -276,7 +276,7 @@ Add the following line to the end of the file
 ./home/pi/your_script_name.sh
 ```
   
-###Dropbox 
+### Dropbox 
 Dropbox is a convenient way to get data back off an RPi, though not recommended for sensitive data (at the very least you should encrypt the data).
 
 Dropbox integration for RPi is not great, but [Dropbox Uploader](https://github.com/andreafabrizi/Dropbox-Uploader) is an excellent script for moving stuff to and from Dropbox. [These instructions](https://www.raspberrypi.org/magpi/dropbox-raspberry-pi/) are also very useful.
