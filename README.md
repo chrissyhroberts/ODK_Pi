@@ -296,9 +296,86 @@ To clone RPi SD Card
 To restore RPi SD Card
 `sudo dd if=/Volumes/RPi_Backups/name of=/dev/disk3 bs=1m`
 
+### Add a PiTFT screen
 
+Tested using the AdaFruit Assembled 480x320 3.5" TFT+ Touchscreen (Resistive)
+
+* To install the screen
+	* Shut down the RPi
+	* Plug the screen on to the GPIO pins of the RPi
+	* Boot up to Raspbian 
+
+```
+cd ~
+wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/adafruit-pitft.sh
+chmod +x adafruit-pitft.sh
+sudo ./adafruit-pitft.sh
+```
+The script will attempt to install the screen automatically. When prompted to select the configuration, choose the screen you are installing, for instance
+> 4. PiTFT 3.5" resistive touch (320x480)
+
+Next you need to select the screen rotation you want, for instance
+> 1. 90 Degrees (Landscape)
+
+The next two steps determine the best setting for the screen
+
+>Would you like the console to appear on the PiTFT display?
+
+This option is good if you want to use the screen as a console window. There's no HDMI output with this config and to be honest I think it is not what most people want, so select ```No``` to this one.  
+
+>Would you like the HDMI display to mirror to the PiTFT display?  
+
+This option will mirror the HDMI output to the PiTFT screen, so is the better choice for most people. Select ```Yes``` to this option.
+
+After rebooting, the screen should start working, with some fairly clunky but functional touch support. (Hint : Use a pointy bit of plastic to get screen to work as a mouse)
+
+**Set up screen to work better**
+
+* Open terminal then go to ```Edit``` menu, followed by ```Preferences```.
+* Change the font to something a bit clearer like ```Monospace 14 Bold```
+
+
+Add some commands to the ```bin``` folder to allow hotswitching of the screen (saves power if you don't need it on).
+
+* Make a command for turning screen off
+
+```
+sudo nano /usr/bin/scroff
+```
+
+Add this line to the file
+
+```
+sudo sh -c 'echo "0" > /sys/class/backlight/soc\:backlig
+ht/brightness'
+```
+press ```CTRL + C``` and ```Y``` to save the file and close nano
+
+* Make a command for turning screen on
+
+```
+sudo nano /usr/bin/scron
+```
+
+Add this line to the file
+
+```
+sudo sh -c 'echo "1" > /sys/class/backlight/soc\:backlig
+ht/brightness'
+```
+press ```CTRL + C``` and ```Y``` to save the file and close nano
+
+
+
+Make both commands executable
+```
+sudo chmod 777 /usr/bin/scroff
+sudo chmod 777 /usr/bin/scron
+```
+
+Then test that they work  
+```
+scroff
+```
+should turn the screen off and ```scron``` should turn it on again.
  
-
-
-
-
