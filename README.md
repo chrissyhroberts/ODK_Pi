@@ -98,7 +98,7 @@ You probably don't want to have to start ODK Briefcase from the command line eve
 * Add a java.desktop file to tell OS how to handle .jar files
 
 ```
-nano /usr/share/applications/java.desktop 
+sudo nano /usr/share/applications/java.desktop 
 ```
 
 ```
@@ -107,7 +107,7 @@ Name=Java
 Comment=Java
 GenericName=Java
 Keywords=java
-Exec=java -jar %f
+Exec=/usr/bin/java -jar %f
 Terminal=false
 X-MultipleArgs=false
 Type=Application
@@ -369,8 +369,8 @@ press ```CTRL + C``` and ```Y``` to save the file and close nano
 
 Make both commands executable
 ```
-sudo chmod 777 /usr/bin/scroff
-sudo chmod 777 /usr/bin/scron
+sudo chmod +x /usr/bin/scroff
+sudo chmod +x /usr/bin/scron
 ```
 
 Then test that they work  
@@ -379,3 +379,36 @@ scroff
 ```
 should turn the screen off and ```scron``` should turn it on again.
  
+* Add a software keyboard  
+Quite hard to use on tiny screen, but could be useful in a pinch
+
+```
+sudo apt-get install matchbox-keyboard
+sudo apt-get install libmatchbox1 -y 
+sudo nano /usr/bin/toggle-matchbox-keyboard.sh
+```
+
+Add this text to the ```toggle-matchbox-keyboard.sh``` file. 
+
+```
+#!/bin/bash
+#This script toggle the virtual keyboard
+
+PID=`pidof matchbox-keyboard`
+if [ ! -e $PID ]; then
+  killall matchbox-keyboard
+else
+ matchbox-keyboard&
+fi
+
+``` 
+Then close file and make executable
+
+```
+sudo chmod +x /usr/bin/toggle-matchbox-keyboard.sh
+
+```
+
+Keyboard can then be accessed through ```menu``` > ```Accessories``` > ```Keyboard```
+
+``````	 
